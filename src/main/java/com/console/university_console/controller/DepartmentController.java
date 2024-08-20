@@ -5,10 +5,7 @@ import com.console.university_console.service.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,15 @@ public class DepartmentController {
         return ResponseEntity
                 .ok()
                 .body(createdDepartment);
+    }
+
+    @PostMapping("/assign/lector")
+    public void assignLectorToDepartment(@RequestParam String lectorId, @RequestParam String departmentId) {
+        System.out.println(lectorId);
+        System.out.println(departmentId);
+//        return ResponseEntity
+//                .ok()
+//                .body(departmentService.assignLectorToDepartment());
     }
 
 }

@@ -17,6 +17,7 @@ public class DepartmentMapper {
                 .builder()
                 .departmentId(department.getDepartmentId())
                 .name(department.getName())
+                .head_of_department_id(department.getHead_of_department().getLectorId())
                 .salary(department.getSalary())
                 .build();
     }

@@ -17,6 +17,6 @@ public class Department {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "lector_id")
+    @JoinColumn(name = "lector")
     private Lector head_of_department;
 }
