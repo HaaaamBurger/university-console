@@ -1,13 +1,10 @@
 package com.console.university_console.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-
+import lombok.*;
 import java.util.List;
 
-@Getter
+@Data
 @Entity
 @Table(name = "lectors")
 public class Lector {
@@ -15,14 +12,10 @@ public class Lector {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String lectorId;
 
-    @Size(min = 2, max = 22, message = "firstname length cannot be less than 2 and higher than 22 characters")
-    @NotBlank(message = "firstname field cannot be blank")
     private String firstname;
 
-    @Size(min = 2, max = 22, message = "lastname length cannot be less than 2 and higher than 22 characters")
-    @NotBlank(message = "lastname field cannot be blank")
     private String lastname;
 
-    @OneToMany(mappedBy = "lectors")
+    @OneToMany(mappedBy = "head_of_department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Department> headingDepartments;
 }
