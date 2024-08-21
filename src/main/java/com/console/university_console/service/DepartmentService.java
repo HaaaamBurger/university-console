@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,29 +36,53 @@ public class DepartmentService implements RestAbstraction<DepartmentDto> {
     public LectorDto assignLectorToDepartment(String lectorId, String departmentId) {
         Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NotFoundException("No such department was found"));
         Lector lector = lectorRepository.findById(lectorId).orElseThrow(() -> new NotFoundException("No such lector was found"));
-        lector.setHeadingDepartments(List.of(department));
+
+        List<Department> headingDepartments = lector.getHeadingDepartments();
+        headingDepartments.add(department);
+
+        department.setHead_of_department(lector);
+
+        lector.setHeadingDepartments(headingDepartments);
+
         lectorRepository.save(lector);
+        departmentRepository.save(department);
 
         return LectorMapper.toDto(lector);
     };
 
+    //TODO department remove
     @Override
     public DepartmentDto remove(String entityId) {
         return null;
     }
 
+    //TODO department update
     @Override
     public DepartmentDto update(String entityId, DepartmentDto entity) {
         return null;
     }
 
     @Override
-    public  List<DepartmentDto> getAll() {
-        return List.of();
+    public List<DepartmentDto> getAll() {
+        List<Department> departmentList = departmentRepository.findAll();
+        return departmentList.stream().map(DepartmentMapper::toDto).toList();
     }
 
     @Override
-    public DepartmentDto getOne(String entityId) {
-        return null;
+    public DepartmentDto getOne(String departmentId) {
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NotFoundException("No such Department was found."));
+        return DepartmentMapper.toDto(department);
     }
+
+    @Transactional
+    public String getHeadOfDepartment(String departmentId) {
+        DepartmentDto departmentDto = getOne(departmentId);
+        System.out.println(departmentDto.getDepartmentId());
+//        Lector lector = lectorRepository.findById(departmentDto.getHead_of_department_id()).orElseThrow(() -> new NotFoundException("No lector was found."));
+//        return "Head of %s department is %s".formatted(departmentDto.getName(), lector.getFirstname() + " " + lector.getLastname());
+        return "hello";
+
+    }
+
+
 }

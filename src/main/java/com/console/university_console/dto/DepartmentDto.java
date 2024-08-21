@@ -1,8 +1,6 @@
 package com.console.university_console.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,6 +10,7 @@ public class DepartmentDto {
     private String departmentId;
 
     @Min(value = 0, message = "salary field cannot be less than 0")
+    @NotNull(message = "salary cannot be empty")
     private Integer salary;
 
     @Size(min = 2, max = 36, message = "department length cannot be less than 2 and higher than 36 characters")

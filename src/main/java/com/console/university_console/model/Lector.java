@@ -16,6 +16,8 @@ public class Lector {
 
     private String lastname;
 
+    private String degree;
+
     @OneToMany(mappedBy = "head_of_department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Department> headingDepartments;
 }

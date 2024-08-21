@@ -2,6 +2,7 @@ package com.console.university_console.util.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,4 +34,15 @@ public class ExceptionHandlers {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException exception) {
+        return ResponseEntity.badRequest().body("Something went wrong with request reading.");
+    }
+
+    @ExceptionHandler(EnumNotMatchingException.class)
+    public ResponseEntity<String> enumNotMatchingExceptionHandler(EnumNotMatchingException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
 }
+

@@ -4,9 +4,13 @@ import com.console.university_console.dto.LectorDto;
 import com.console.university_console.model.Lector;
 import com.console.university_console.repository.LectorRepository;
 import com.console.university_console.util.abstracts.RestAbstraction;
+import com.console.university_console.util.exceptions.EnumNotMatchingException;
+import com.console.university_console.util.exceptions.NotFoundException;
+import com.console.university_console.util.interfaces.DegreeTypes;
 import com.console.university_console.util.mappers.LectorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.util.EnumUtils;
 
 import java.util.List;
 
@@ -18,15 +22,22 @@ public class LectorService implements RestAbstraction<LectorDto> {
 
     @Override
     public LectorDto create(LectorDto lectorDto) {
-        Lector lector = LectorMapper.fromDto(lectorDto);
+        try {
+            EnumUtils.findEnumInsensitiveCase(DegreeTypes.class, lectorDto.getDegree().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new EnumNotMatchingException("You should choose only one of allowed degrees: assistant, associate professor, professor");
+        }
+        Lector lector = LectorMapper.fromDto(lectorDto, List.of());
         return LectorMapper.toDto(lectorRepository.save(lector));
     }
 
+    //TODO lector remove
     @Override
     public LectorDto remove(String entityId) {
         return null;
     }
 
+    //TODO lector update
     @Override
     public LectorDto update(String entityId, LectorDto entity) {
         return null;
@@ -35,12 +46,12 @@ public class LectorService implements RestAbstraction<LectorDto> {
     @Override
     public List<LectorDto> getAll() {
         List<Lector> lectorList = lectorRepository.findAll();
-
         return lectorList.stream().map(LectorMapper::toDto).toList();
     }
 
     @Override
-    public LectorDto getOne(String entityId) {
-        return null;
+    public LectorDto getOne(String lectorId) {
+        Lector lector = lectorRepository.findById(lectorId).orElseThrow(() -> new NotFoundException("No such Lector was found."));
+        return LectorMapper.toDto(lector);
     }
 }
