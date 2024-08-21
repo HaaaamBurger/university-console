@@ -2,6 +2,7 @@ package com.console.university_console.service;
 
 import com.console.university_console.dto.DepartmentDto;
 import com.console.university_console.dto.LectorDto;
+import com.console.university_console.dto.StatisticsDto;
 import com.console.university_console.model.Department;
 import com.console.university_console.model.Lector;
 import com.console.university_console.repository.DepartmentRepository;
@@ -77,12 +78,13 @@ public class DepartmentService implements RestAbstraction<DepartmentDto> {
     @Transactional
     public String getHeadOfDepartment(String departmentId) {
         DepartmentDto departmentDto = getOne(departmentId);
-        System.out.println(departmentDto.getDepartmentId());
-//        Lector lector = lectorRepository.findById(departmentDto.getHead_of_department_id()).orElseThrow(() -> new NotFoundException("No lector was found."));
-//        return "Head of %s department is %s".formatted(departmentDto.getName(), lector.getFirstname() + " " + lector.getLastname());
-        return "hello";
-
+        Lector lector = lectorRepository.findById(departmentDto.getHead_of_department_id()).orElseThrow(() -> new NotFoundException("No lector was found."));
+        return "Head of %s department is %s.".formatted(departmentDto.getName(), lector.getFirstname() + " " + lector.getLastname());
     }
+
+//    public StatisticsDto getDepartmentStatistics(String departmentId) {
+//
+//    }
 
 
 }
