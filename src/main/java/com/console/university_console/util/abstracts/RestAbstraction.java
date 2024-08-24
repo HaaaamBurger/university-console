@@ -1,6 +1,7 @@
 package com.console.university_console.util.abstracts;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RestAbstraction<T> {
     T create(T entity);

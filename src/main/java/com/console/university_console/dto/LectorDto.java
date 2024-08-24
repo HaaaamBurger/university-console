@@ -1,5 +1,6 @@
 package com.console.university_console.dto;
 
+import com.console.university_console.model.Department;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -25,5 +26,7 @@ public class LectorDto {
     @NotBlank(message = "degree field cannot be blank.choose one of assistant, associate professor or professor")
     private String degree;
 
-    private List<String> headingDepartments_ids;
+    private Department headingDepartment;
+
+    private List<Department> workOnDepartments;
 }

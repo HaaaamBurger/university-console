@@ -1,8 +1,11 @@
 package com.console.university_console.dto;
 
+import com.console.university_console.model.Lector;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Builder
 @Data
@@ -17,6 +20,13 @@ public class DepartmentDto {
     @NotBlank(message = "department cannot be blank")
     private String name;
 
-    @NotBlank(message = "head_of_department field cannot be empty")
-    private String head_of_department_id;
+    @NotBlank(message = "headOfDepartmentId field cannot be empty")
+    private String headOfDepartmentId;
+
+//    @NotBlank(message = "head_of_department field cannot be empty")
+
+    private Lector headOfDepartment;
+
+    private List<Lector> departmentEmployees;
+
 }

@@ -1,5 +1,7 @@
 package com.console.university_console.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -18,8 +20,11 @@ public class Lector {
 
     private String degree;
 
-    @OneToMany(mappedBy = "head_of_department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Department> headingDepartments;
+    @OneToOne(mappedBy = "headOfDepartment")
+    @JsonBackReference(value = "department-head")
+    private Department headingDepartment;
 
-
+    @ManyToMany(mappedBy = "departmentEmployees")
+//    @JsonBackReference(value = "department-employees")
+    private List<Department> workOnDepartments;
 }

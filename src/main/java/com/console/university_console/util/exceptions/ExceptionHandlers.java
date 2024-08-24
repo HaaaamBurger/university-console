@@ -1,5 +1,6 @@
 package com.console.university_console.util.exceptions;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -21,7 +22,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> notFoundExceptionHandler(NotFoundException exception) {
-        return ResponseEntity.badRequest().body(exception.getMessage());
+        return ResponseEntity.badRequest().body(exception.getCause().getLocalizedMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -34,6 +35,13 @@ public class ExceptionHandlers {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> dataIntegrityViolationExceptionHandler(DataIntegrityViolationException exception) {
+        return ResponseEntity.badRequest().body("This entity is already exists.");
+    }
+
+
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException exception) {

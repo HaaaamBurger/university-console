@@ -8,6 +8,9 @@ public class DepartmentMapper {
         Department department = new Department();
         department.setDepartmentId(departmentDto.getDepartmentId());
         department.setName(departmentDto.getName());
+        department.setHeadOfDepartment(departmentDto.getHeadOfDepartment());
+        department.setHeadOfDepartmentId(departmentDto.getHeadOfDepartmentId());
+        department.setDepartmentEmployees(departmentDto.getDepartmentEmployees());
         department.setSalary(departmentDto.getSalary());
         return department;
     }
@@ -16,8 +19,10 @@ public class DepartmentMapper {
         return DepartmentDto
                 .builder()
                 .departmentId(department.getDepartmentId())
+                .headOfDepartmentId(department.getHeadOfDepartmentId())
                 .name(department.getName())
-                .head_of_department_id(department.getHead_of_department().getLectorId())
+                .departmentEmployees(department.getDepartmentEmployees())
+                .headOfDepartment(department.getHeadOfDepartment())
                 .salary(department.getSalary())
                 .build();
     }

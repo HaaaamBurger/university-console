@@ -2,6 +2,7 @@ package com.console.university_console.controller;
 
 import com.console.university_console.dto.DepartmentDto;
 import com.console.university_console.dto.LectorDto;
+import com.console.university_console.dto.StatisticsDto;
 import com.console.university_console.model.Lector;
 import com.console.university_console.service.DepartmentService;
 import com.console.university_console.util.exceptions.NotFoundException;
@@ -47,4 +48,11 @@ public class DepartmentController {
                 .ok()
                 .body(departmentService.getHeadOfDepartment(departmentId));
     }
+
+//    @GetMapping("/statistics/{departmentId}")
+//    public ResponseEntity<StatisticsDto> getDepartmentStatistics(@PathVariable String departmentId) {
+//        return ResponseEntity
+//                .ok()
+//                .body(departmentService.getDepartmentStatistics(departmentId));
+//    }
 }

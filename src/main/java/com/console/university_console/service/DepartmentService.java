@@ -2,7 +2,6 @@ package com.console.university_console.service;
 
 import com.console.university_console.dto.DepartmentDto;
 import com.console.university_console.dto.LectorDto;
-import com.console.university_console.dto.StatisticsDto;
 import com.console.university_console.model.Department;
 import com.console.university_console.model.Lector;
 import com.console.university_console.repository.DepartmentRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,25 +26,25 @@ public class DepartmentService implements RestAbstraction<DepartmentDto> {
     @Transactional
     @Override
     public DepartmentDto create(DepartmentDto departmentDto) {
+        Lector lector = lectorRepository.findById(departmentDto.getHeadOfDepartmentId()).orElseThrow(() -> new NotFoundException("No lector was found"));
+
+        System.out.println(departmentDto.getHeadOfDepartmentId());
+
         Department department = DepartmentMapper.fromDto(departmentDto);
-        lectorRepository.findById(departmentDto.getHead_of_department_id()).ifPresent(department::setHead_of_department);
+        department.setHeadOfDepartment(lector);
+        department.setDepartmentEmployees(List.of());
+
         return DepartmentMapper.toDto(departmentRepository.save(department));
     }
 
     @Transactional
     public LectorDto assignLectorToDepartment(String lectorId, String departmentId) {
-        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NotFoundException("No such department was found"));
-        Lector lector = lectorRepository.findById(lectorId).orElseThrow(() -> new NotFoundException("No such lector was found"));
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NotFoundException("No department was found"));
+        Lector lector = lectorRepository.findById(lectorId).orElseThrow(() -> new NotFoundException("No lector was found"));
 
-        List<Department> headingDepartments = lector.getHeadingDepartments();
-        headingDepartments.add(department);
-
-        department.setHead_of_department(lector);
-
-        lector.setHeadingDepartments(headingDepartments);
+//        lector.getHeadingDepartments().add(department);
 
         lectorRepository.save(lector);
-        departmentRepository.save(department);
 
         return LectorMapper.toDto(lector);
     };
@@ -78,11 +76,32 @@ public class DepartmentService implements RestAbstraction<DepartmentDto> {
     @Transactional
     public String getHeadOfDepartment(String departmentId) {
         DepartmentDto departmentDto = getOne(departmentId);
-        Lector lector = lectorRepository.findById(departmentDto.getHead_of_department_id()).orElseThrow(() -> new NotFoundException("No lector was found."));
+        Lector lector = lectorRepository.findById(departmentDto.getHeadOfDepartment().getLectorId()).orElseThrow(() -> new NotFoundException("No lector was found."));
         return "Head of %s department is %s.".formatted(departmentDto.getName(), lector.getFirstname() + " " + lector.getLastname());
     }
 
+//    @Transactional
 //    public StatisticsDto getDepartmentStatistics(String departmentId) {
+//        List<Lector> lectorsByDepartmentId = departmentRepository.findLectorsByDepartmentId(departmentId);
+//
+//        long assistantsCount = lectorsByDepartmentId.stream()
+//                .filter(lector -> "assistant".equals(lector.getDegree()))
+//                .count();
+//
+//        long associateProfessorsCount = lectorsByDepartmentId.stream()
+//                .filter(lector -> "associate_professor".equals(lector.getDegree()))
+//                .count();
+//
+//        long professorsCount = lectorsByDepartmentId.stream()
+//                .filter(lector -> "professor".equals(lector.getDegree()))
+//                .count();
+//
+//        return StatisticsDto
+//                .builder()
+//                .assistans((int) assistantsCount)
+//                .associate_professors((int) associateProfessorsCount)
+//                .professors((int) professorsCount)
+//                .build();
 //
 //    }
 

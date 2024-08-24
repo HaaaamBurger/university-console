@@ -27,7 +27,8 @@ public class LectorService implements RestAbstraction<LectorDto> {
         } catch (IllegalArgumentException e) {
             throw new EnumNotMatchingException("You should choose only one of allowed degrees: assistant, associate professor, professor");
         }
-        Lector lector = LectorMapper.fromDto(lectorDto, List.of());
+        lectorDto.setWorkOnDepartments(List.of());
+        Lector lector = LectorMapper.fromDto(lectorDto);
         return LectorMapper.toDto(lectorRepository.save(lector));
     }
 

@@ -9,13 +9,16 @@ import java.util.List;
 
 public class LectorMapper {
 
-    public static Lector fromDto(LectorDto lectorDto, List<Department> headingDepartments) {
+    public static Lector fromDto(LectorDto lectorDto) {
         Lector lector = new Lector();
         lector.setLectorId(lectorDto.getLectorId());
         lector.setFirstname(lectorDto.getFirstname());
         lector.setDegree(lectorDto.getDegree());
         lector.setLastname(lectorDto.getLastname());
-        lector.setHeadingDepartments(headingDepartments);
+        lector.setHeadingDepartment(lector.getHeadingDepartment());
+        lector.setWorkOnDepartments(lectorDto.getWorkOnDepartments());
+//        lector.setHeadingDepartments(headingDepartments);
+
         return lector;
     }
 
@@ -26,7 +29,9 @@ public class LectorMapper {
                 .firstname(lector.getFirstname())
                 .degree(lector.getDegree())
                 .lastname(lector.getLastname())
-                .headingDepartments_ids(lector.getHeadingDepartments().stream().map(Department::getDepartmentId).toList())
+                .headingDepartment(lector.getHeadingDepartment())
+                .workOnDepartments(lector.getWorkOnDepartments())
+//                .headingDepartments_ids(lector.getHeadingDepartments().stream().map(Department::getDepartmentId).toList())
                 .build();
     }
 }
